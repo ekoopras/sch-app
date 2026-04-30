@@ -5,7 +5,7 @@ return [
         [
             'id' => 1,
             'label' => 'Home',
-            'url' => 'home', // Ini adalah nama route
+            'url' => '', // Ini adalah nama route
             'type' => 'link',
         ],
         [
@@ -22,16 +22,8 @@ return [
             'child' => [
                 [
                     'label' => 'Selayang Pandang',
-                    'url' => '#'
-                ],
-                [
-                    'label' => 'Profile Kepala Sekolah',
-                    'url' => '#'
-                ],
-                [
-                    'label' => 'Tenaga Pendidikan',
-                    'url' => '#'
-                ],
+                    'url' => 'selayang-pandang'
+                ]
             ]
         ],
 

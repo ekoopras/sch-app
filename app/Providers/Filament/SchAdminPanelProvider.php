@@ -28,8 +28,11 @@ class SchAdminPanelProvider extends PanelProvider
             ->path('sch-admin')
             ->theme(asset('css/filament/sch-admin/theme.css'))
             ->sidebarCollapsibleOnDesktop()
-            ->sidebarWidth('15rem')
+            ->sidebarWidth('16rem')
             ->breadcrumbs(false)
+            ->brandLogo(fn() => view('theme.admin.logo'))
+            ->brandName('SPENSATA Dashboard')
+            ->favicon(asset('images/favicon.png'))
             ->font('Poppins')
             ->colors([
                 'primary' => Color::hex('#465fff'),

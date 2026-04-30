@@ -20,7 +20,9 @@ class Post extends Model
     ];
 
     protected $casts = [
-        'tags' => 'array',
+        'content' => 'array',      // Memperbaiki error foreach
+        'tags' => 'array',         // Agar Filament TagsInput berfungsi
+        'is_published' => 'boolean',
         'published_at' => 'datetime',
     ];
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PostController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
@@ -15,22 +16,23 @@ use Illuminate\Support\Facades\Route;
 //     return view('theme.page.index', compact('posts'));
 // });
 
-Route::get('/blog/{slug}', function ($slug) {
-    $post = Post::where('slug', $slug)->firstOrFail();
-    return view('theme.page.show', compact('post'));
-})->name('blog.show');
-
 Route::get('/', [PageController::class, 'index'])
     ->name('home');
 
-Route::get('/visi-misi', [PageController::class, 'VisiMisi'])
-    ->name('visi-misi');
-
-Route::get('/profil', [PageController::class, 'profil'])
-    ->name('profile');
-
-Route::get('/blog', [PageController::class, 'blog'])
+Route::get('/blog', [PostController::class, 'blog'])
     ->name('blog');
 
-Route::get('/kontak', [PageController::class, 'kontak'])
-    ->name('kontak');
+Route::get('/blog/{slug}', [PostController::class, 'show'])
+    ->name('blog.show');
+
+
+
+// Route::get('/prestasi-siswa', [PageController::class, 'prestasi'])
+//     ->name('prestasi');
+
+Route::get('/{slug}', [PageController::class, 'show'])->name('page.show');
+
+// Route::prefix('blog')->group(function () {
+//     Route::get('/', [PostController::class, 'blog'])->name('blog');
+//     Route::get('/{slug}', [PostController::class, 'show'])->name('blog.show');
+// });

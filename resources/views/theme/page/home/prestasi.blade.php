@@ -1,8 +1,6 @@
 <section class="relative w-full bg-gray-100 py-16 md:py-24 overflow-hidden" x-data="{
-    slides: {{ json_encode($prestasiSlides) }},
     scrollTo(direction) {
         const container = this.$refs.slider;
-        // Geser seukuran satu card agar smooth
         const scrollAmount = container.querySelector('.snap-start').offsetWidth + 24;
         container.scrollBy({
             left: direction === 'next' ? scrollAmount : -scrollAmount,
@@ -21,19 +19,7 @@
         </p>
     </div>
 
-    <div class="absolute inset-0 z-0 opacity-30 pointer-events-none">
-
-        {{-- Bola 1 (Kiri Atas, Pink Terang, Solid) --}}
-        <div class="absolute top-20 left-10 md:left-20 w-32 h-32 md:w-48 md:h-48 rounded-full bg-pink-400">
-        </div>
-
-        {{-- Bola 2 (Kanan Bawah, Biru Muda Terang, Solid) --}}
-        <div class="absolute bottom-20 right-10 md:right-20 w-40 h-40 md:w-60 md:h-60 rounded-full bg-cyan-300">
-        </div>
-    </div>
-
     <div class="relative z-10 w-[90%] xl:w-[90%] mx-auto">
-        {{-- Header --}}
         <div class="flex justify-center items-end mt-10 mb-10">
 
             {{-- Navigasi (Sembunyi di Mobile karena biasanya swipe pakai jempol) --}}
@@ -54,57 +40,57 @@
         </div>
 
         {{-- Slider Container --}}
-        <div class="relative -mx-6 md:mx-0"> {{-- -mx-6 agar scroll mentok ke pinggir layar di mobile --}}
+        <div class="relative -mx-6 md:mx-0">
             <div x-ref="slider"
-                class="flex overflow-x-auto snap-x snap-mandatory gap-5 md:gap-6 no-scrollbar px-6 md:px-0 pb-10"
+                class="flex overflow-x-auto snap-x snap-mandatory gap-6 no-scrollbar px-6 md:px-0 pb-10 scroll-smooth"
                 style="scrollbar-width: none; -ms-overflow-style: none;">
 
-                <template x-for="(slide, index) in slides" :key="index">
-                    {{-- 
-                        MOBILE: w-[85%] (Memberikan efek Peek/intip gambar sebelah)
-                        DESKTOP: lg:w-1/4 (Tetap 4 kolom)
-                    --}}
-                    <div class="flex-none w-[85%] md:w-[45%] lg:w-1/4 snap-start">
-                        <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 group">
-                            {{-- Foto --}}
-                            <div class="relative h-[500px] md:h-[400px] md:aspect-square overflow-hidden">
-                                <img :src="'{{ asset('') }}' + slide.img"
-                                    class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                {{-- Loop Data Langsung dari Content Page Prestasi --}}
+                @foreach ($prestasiPage->content as $block)
+                    @if ($block['type'] === 'image_block')
+                        <div class="flex-none w-[80%] md:w-[40%] lg:w-1/4 snap-start">
+                            <div class="bg-white rounded-[2rem] overflow-hidden shadow-lg border border-gray-100 group">
+                                {{-- Frame Gambar 3:4 agar sama dengan halaman prestasi --}}
+                                <div class="relative aspect-[3/4] overflow-hidden">
+                                    <img src="{{ asset('storage/' . $block['data']['image']) }}"
+                                        class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
 
-                                {{-- Overlay Gradient ala App --}}
-                                <div
-                                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent">
-                                </div>
+                                    {{-- Overlay Gradient --}}
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-t from-blue-950/90 via-transparent to-transparent">
+                                    </div>
 
-                                {{-- Text di dalam gambar agar makin mirip App --}}
-                                <div class="absolute bottom-0 p-6">
-                                    <span
-                                        class="bg-white/20 backdrop-blur-md text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest font-bold mb-2 inline-block"
-                                        x-text="slide.tingkat"></span>
-                                    <h3 class="text-white font-bold text-lg leading-tight" x-text="slide.title"></h3>
+                                    {{-- Caption di Dalam Gambar (Style App) --}}
+                                    <div class="absolute bottom-0 p-6">
+                                        <span
+                                            class="bg-pink-600 text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest font-bold mb-3 inline-block">
+                                            Prestasi
+                                        </span>
+                                        <h3 class="text-white font-bold text-lg leading-tight line-clamp-2">
+                                            {{ $block['data']['caption'] ?? 'Prestasi Siswa SPENSATA' }}
+                                        </h3>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </template>
+                    @endif
+                @endforeach
 
-                {{-- Spacer Akhir agar card terakhir tidak mentok --}}
-                <div class="flex-none w-1 md:hidden"></div>
             </div>
         </div>
-        {{-- --- TOMBOL LIHAT LEBIH BANYAK --- --}}
+
+        {{-- Tombol Lihat Semua --}}
         <div class="mt-8 text-center" data-aos="fade-up">
-            <a href="/prestasi"
-                class="inline-flex items-center gap-2 px-8 py-3 bg-white text-blue-950 font-bold rounded-full shadow-md hover:shadow-xl hover:bg-blue-950 hover:text-white transition-all duration-300 border border-gray-100 group">
-                <span>Lihat Lebih Banyak Prestasi</span>
-                <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none"
+            <a href="/prestasi-siswa"
+                class="inline-flex items-center gap-2 px-10 py-4 bg-blue-950 text-white font-bold rounded-full shadow-xl hover:bg-pink-600 transition-all duration-300 group">
+                <span>Lihat Semua Prestasi</span>
+                <svg class="w-5 h-5 transform group-hover:translate-x-2 transition-transform" fill="none"
                     stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
             </a>
         </div>
-        {{-- --------------------------------- --}}
     </div>
 </section>
 
@@ -124,7 +110,6 @@
 </div>
 
 <style>
-    /* Hilangkan Scrollbar di semua browser */
     .no-scrollbar::-webkit-scrollbar {
         display: none;
     }

@@ -1,10 +1,10 @@
 @extends('theme.layout.app')
 
-@section('title', 'Visi & Misi')
+@section('title', 'Kontak')
 
 @section('content')
 
-    {{-- @include('theme.page.visi-misi.sambutan') --}}
-    <h1>halaman kontak</h1>
+    @include('theme.page.kontak.hero')
+    @include('theme.page.kontak.content')
 
 @endsection

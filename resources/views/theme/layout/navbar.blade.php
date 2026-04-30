@@ -42,18 +42,22 @@
                         {{-- Dropdown Menu Content --}}
                         <div
                             class="absolute left-0 top-full hidden group-hover:block w-52 bg-white rounded-xl shadow-xl py-3 z-[150] border border-gray-100">
-                            @foreach ($link['child'] as $sub)
-                                {{-- <a href="{{ route($sub['url']) }}" --}}
-                                <a href="#"
-                                    class="block px-5 py-2.5 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors">
-                                    {{ $sub['label'] }}
-                                </a>
-                            @endforeach
+                            {{-- Cek apakah key 'child' ada dan tidak kosong --}}
+                            @if (isset($link['child']) && is_array($link['child']))
+                                @foreach ($link['child'] as $sub)
+                                    {{-- Gunakan url() karena data kita berupa slug 'selayang-pandang' --}}
+                                    <a href="{{ url($sub['url']) }}"
+                                        class="block px-5 py-2.5 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors">
+                                        {{ $sub['label'] }}
+                                    </a>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 @else
                     {{-- RENDER: LINK BIASA --}}
-                    <a href="{{ route($link['url']) }}"
+                    {{-- <a href="{{ route($link['url']) }}" --}}
+                    <a href="{{ url($link['url']) }}"
                         class="{{ request()->routeIs($link['url']) ? 'text-pink-300' : 'text-white' }} hover:text-pink-300 font-semibold transition-all">
                         {{ $link['label'] }}
                     </a>

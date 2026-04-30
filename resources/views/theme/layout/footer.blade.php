@@ -1,18 +1,23 @@
-<footer class="bg-blue-950 text-white pt-20 pb-10 overflow-hidden">
-    <div class="container mx-auto px-6">
+<footer class="bg-blue-950 text-white pt-20 pb-10 overflow-hidden ">
+    <div class="w-[90%] xl:w-[90%] mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
 
             {{-- Kolom 1: Profil Singkat --}}
             <div class="space-y-6">
                 <div class="flex items-center gap-3">
                     {{-- Ganti dengan logo sekolah --}}
-                    <div
-                        class="w-12 h-12 bg-white rounded-xl flex items-center justify-center font-bold text-blue-950 text-xl shadow-lg">
-                        S
+                    <div class="w-12 h-12 flex items-center justify-center overflow-hidden">
+                        <img src="{{ asset('logoapp.png') }}" alt="logo" class="w-full h-full object-contain">
                     </div>
-                    <div>
-                        <h2 class="text-xl font-bold tracking-tight">SPENSATA</h2>
-                        <p class="text-[10px] text-pink-400 uppercase tracking-[0.2em]">SMPN 1 Tasikmadu</p>
+
+                    {{-- Teks (Judul & Sub-judul) --}}
+                    <div class="flex flex-col justify-center leading-tight">
+                        <h1 class="text-xl md:text-2xl text-white font-bold tracking-tight">
+                            SPENSATA
+                        </h1>
+                        <p class="text-[10px] md:text-xs text-white font-medium tracking-widest uppercase">
+                            SMPN 1 TASIKMADU
+                        </p>
                     </div>
                 </div>
                 <p class="text-gray-400 text-sm leading-relaxed">
@@ -70,15 +75,15 @@
                 <ul class="space-y-4 text-gray-400 text-sm">
                     <li class="flex items-start gap-4">
                         <span class="text-pink-500"><i class="fas fa-map-marker-alt"></i></span>
-                        <span>Jl. Raya Tasikmadu, Karanganyar, Jawa Tengah, Indonesia</span>
+                        <span>CWFH+83J, Kranggan, Buran, Kec. Tasikmadu, Kabupaten Karanganyar, Jawa Tengah 57722</span>
                     </li>
                     <li class="flex items-center gap-4">
                         <span class="text-pink-500"><i class="fas fa-phone-alt"></i></span>
-                        <span>(0271) 123456</span>
+                        <span>(0271) 495572</span>
                     </li>
                     <li class="flex items-center gap-4">
                         <span class="text-pink-500"><i class="fas fa-envelope"></i></span>
-                        <span>info@smpn1tasikmadu.sch.id</span>
+                        <span>smpn01tasikmadu@gmail.com </span>
                     </li>
                 </ul>
             </div>
@@ -92,7 +97,7 @@
                 <div class="bg-white/5 p-6 rounded-2xl border border-white/10">
                     <div class="flex justify-between text-sm mb-3">
                         <span class="text-gray-400">Senin - Kamis</span>
-                        <span class="text-pink-300">07:00 - 15:00</span>
+                        <span class="text-pink-300">07:00 - 16:00</span>
                     </div>
                     <div class="flex justify-between text-sm mb-3">
                         <span class="text-gray-400">Jumat</span>
