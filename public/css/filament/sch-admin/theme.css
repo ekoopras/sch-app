@@ -2655,6 +2655,10 @@ input:where([type='file']):focus {
   width: 1rem;
 }
 
+.w-48 {
+  width: 12rem;
+}
+
 .w-5 {
   width: 1.25rem;
 }
@@ -2873,6 +2877,10 @@ input:where([type='file']):focus {
 
 .flex-1 {
   flex: 1 1 0%;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
 }
 
 .shrink-0 {
@@ -3308,6 +3316,12 @@ input:where([type='file']):focus {
   margin-left: calc(-2rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
+.space-x-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.75rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
 .space-y-1 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
@@ -3494,6 +3508,10 @@ input:where([type='file']):focus {
   border-top-width: 1px;
 }
 
+.border-dashed {
+  border-style: dashed;
+}
+
 .\!border-none {
   border-style: none !important;
 }
@@ -3638,6 +3656,11 @@ input:where([type='file']):focus {
   background-position: center;
 }
 
+.object-contain {
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
@@ -3734,6 +3757,11 @@ input:where([type='file']):focus {
 .py-1\.5 {
   padding-top: 0.375rem;
   padding-bottom: 0.375rem;
+}
+
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
 }
 
 .py-12 {
@@ -3919,6 +3947,14 @@ input:where([type='file']):focus {
   line-height: 2.25rem;
 }
 
+.text-\[10px\] {
+  font-size: 10px;
+}
+
+.text-\[9px\] {
+  font-size: 9px;
+}
+
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
@@ -3980,6 +4016,10 @@ input:where([type='file']):focus {
   font-weight: 100;
 }
 
+.uppercase {
+  text-transform: uppercase;
+}
+
 .capitalize {
   text-transform: capitalize;
 }
@@ -4000,12 +4040,20 @@ input:where([type='file']):focus {
   line-height: 2;
 }
 
+.leading-tight {
+  line-height: 1.25;
+}
+
 .tracking-tight {
   letter-spacing: -0.025em;
 }
 
 .tracking-tighter {
   letter-spacing: -0.05em;
+}
+
+.tracking-widest {
+  letter-spacing: 0.1em;
 }
 
 .text-custom-400 {
@@ -4069,6 +4117,11 @@ input:where([type='file']):focus {
 
 .text-gray-700\/50 {
   color: rgba(var(--gray-700), 0.5);
+}
+
+.text-gray-900 {
+  --tw-text-opacity: 1;
+  color: rgba(var(--gray-900), var(--tw-text-opacity, 1));
 }
 
 .text-gray-950 {
