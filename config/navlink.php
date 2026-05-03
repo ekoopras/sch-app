@@ -8,22 +8,46 @@ return [
             'url' => '', // Ini adalah nama route
             'type' => 'link',
         ],
+
         [
             'id' => 2,
-            'label' => 'Visi & Misi',
-            'url' => 'visi-misi',
-            'type' => 'link',
-        ],
-        [
-            'id' => 3,
             'label' => 'Profil',
             'url' => 'profil',
             'type' => 'dropdown',
             'child' => [
                 [
+                    'label' => 'Sambutan Dan Profil Kepala Sekolah',
+                    'url' => 'sambutan-dan-profil-kepala-sekolah'
+                ],
+                [
+                    'label' => 'Visi & Misi',
+                    'url' => 'visi-misi'
+                ],
+                [
                     'label' => 'Selayang Pandang',
                     'url' => 'selayang-pandang'
+                ],
+                [
+                    'label' => 'Tenaga Pendidikan',
+                    'url' => 'tenaga-pendidikan'
                 ]
+            ]
+        ],
+
+        [
+            'id' => 3,
+            'label' => 'Layanan Publik',
+            'url' => 'layanan-publik',
+            'type' => 'dropdown',
+            'child' => [
+                [
+                    'label' => 'Alur layanan',
+                    'url' => 'alur-layanan'
+                ],
+                [
+                    'label' => 'Survey Kepuasan Layanan',
+                    'url' => 'survey-kepuasan-layanan'
+                ],
             ]
         ],
 
@@ -45,13 +69,13 @@ return [
     'actions' => [
         [
             'label' => 'PPDB',
-            'url' => '#', // Nama route
+            'url' => 'ppdb-2026', // Nama route
             'class' => 'bg-pink-500 hover:bg-pink-700',
         ],
 
         [
             'label' => 'Login',
-            'url' => '#',
+            'url' => 'sch-admin',
             'class' => 'border border-white hover:bg-white hover:text-blue-900', // Contoh tombol outline
         ],
     ]

@@ -1,6 +1,6 @@
 @extends('theme.layout.app')
 
-@section('title', 'Visi & Misi')
+@section('title', 'Berita Terbaru')
 
 @section('content')
 

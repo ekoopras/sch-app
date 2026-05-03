@@ -31,8 +31,8 @@ class SchAdminPanelProvider extends PanelProvider
             ->sidebarWidth('16rem')
             ->breadcrumbs(false)
             ->brandLogo(fn() => view('theme.admin.logo'))
-            ->brandName('SPENSATA Dashboard')
-            ->favicon(asset('images/favicon.png'))
+            ->brandName('SPENSATA')
+            ->favicon(asset('ico.png'))
             ->font('Poppins')
             ->colors([
                 'primary' => Color::hex('#465fff'),
