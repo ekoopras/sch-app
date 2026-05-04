@@ -87,4 +87,9 @@ class MapelResource extends Resource
             //'edit' => Pages\EditMapel::route('/{record}/edit'),
         ];
     }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->isSuperAdmin(); // hanya super admin
+    }
 }

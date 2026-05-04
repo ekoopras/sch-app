@@ -52,6 +52,7 @@ class UserResource extends Resource
                     ->options([
                         'super_admin' => 'Super Admin',
                         'guru' => 'Guru',
+                        'jurnalis' => 'Jurnalis',
                     ])
                     ->required(),
             ]);

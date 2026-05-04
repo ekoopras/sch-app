@@ -199,4 +199,9 @@ class UjianResource extends Resource
             //'edit' => Pages\EditUjian::route('/{record}/edit'),
         ];
     }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->isSuperAdmin(); // hanya super admin
+    }
 }

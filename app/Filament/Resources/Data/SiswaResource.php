@@ -96,4 +96,9 @@ class SiswaResource extends Resource
             //'edit' => Pages\EditSiswa::route('/{record}/edit'),
         ];
     }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->isSuperAdmin(); // hanya super admin
+    }
 }

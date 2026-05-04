@@ -171,4 +171,9 @@ class BankSoalResource extends Resource
             'isi-soal' => Pages\Soal::route('/{record}/soal'),
         ];
     }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->isSuperAdmin(); // hanya super admin
+    }
 }

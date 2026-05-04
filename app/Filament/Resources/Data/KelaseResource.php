@@ -87,4 +87,9 @@ class KelaseResource extends Resource
             //'edit' => Pages\EditKelase::route('/{record}/edit'),
         ];
     }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->isSuperAdmin(); // hanya super admin
+    }
 }
