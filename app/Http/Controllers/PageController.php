@@ -10,58 +10,27 @@ class PageController extends Controller
 {
     public function index()
     {
-        //var blog
         $blogs = Post::latest()->take(6)->get();
 
-        //var prestasi
-        $prestasiPage = Page::where('slug', 'prestasi-siswa')->first();
-
-        //var program unggulan
-        $unggulanPage = Page::where('slug', 'program-unggulan')->first();
-
-        //var fasilitas sekolah
-        $fasilitasPage = Page::where('slug', 'fasilitas-sekolah')->first();
+        // Gunakan null coalescing untuk menghindari error 'Attempt to read property on null'
+        $prestasiPage = Page::where('slug', 'prestasi-siswa')->first() ?? new Page(['content' => []]);
+        $unggulanPage = Page::where('slug', 'program-unggulan')->first() ?? new Page(['content' => []]);
+        $fasilitasPage = Page::where('slug', 'fasilitas-sekolah')->first() ?? new Page(['content' => []]);
 
         return view('theme.page.home.index', compact('blogs', 'prestasiPage', 'unggulanPage', 'fasilitasPage'));
     }
 
-    // public function VisiMisi()
+    // public function profil()
     // {
-    //     $page = Page::where('slug', 'visi-misi')->firstOrFail();
-
-    //     return view('theme.page.visi-misi.index', [
-    //         'page' => $page
-    //     ]);
+    //     return view('theme.page.profil.index');
     // }
 
-    public function profil()
-    {
-        return view('theme.page.profil.index');
-    }
-
-    // public function blog()
+    // public function kontak()
     // {
-    //     //var blog grid
-    //     $blogs = Post::latest()->paginate(9);
 
-    //     return view('theme.page.blog.index', compact('blogs'));
-    // }
+    //     $page = Page::where('slug', 'kontak')->firstOrFail();
 
-    public function kontak()
-    {
-
-        $page = Page::where('slug', 'kontak')->firstOrFail();
-
-        return view('theme.page.kontak.index', [
-            'page' => $page
-        ]);
-    }
-
-    // public function prestasi()
-    // {
-    //     $page = Page::where('slug', 'prestasi-siswa')->firstOrFail();
-
-    //     return view('theme.page.prestasi.index', [
+    //     return view('theme.page.kontak.index', [
     //         'page' => $page
     //     ]);
     // }

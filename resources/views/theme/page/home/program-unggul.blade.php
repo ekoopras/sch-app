@@ -44,44 +44,49 @@
         </div>
 
         {{-- Slider Container --}}
-        <div class="relative -mx-6 md:mx-0"> {{-- -mx-6 agar scroll mentok ke pinggir layar di mobile --}}
+        <div class="relative -mx-6 md:mx-0">
             <div x-ref="slider"
-                class="flex overflow-x-auto snap-x snap-mandatory gap-5 md:gap-6 no-scrollbar px-6 md:px-0 pb-10"
+                class="flex overflow-x-auto snap-x snap-mandatory gap-6 no-scrollbar px-6 md:px-0 pb-10 scroll-smooth"
                 style="scrollbar-width: none; -ms-overflow-style: none;">
 
-                {{-- Loop Data Langsung dari Content Page Prestasi --}}
-                @foreach ($unggulanPage->content as $block)
-                    @if ($block['type'] === 'image_block')
-                        <div class="flex-none w-[80%] md:w-[40%] lg:w-1/4 snap-start">
-                            <div class="bg-white rounded-[2rem] overflow-hidden shadow-lg border border-gray-100 group">
-                                {{-- Frame Gambar 3:4 agar sama dengan halaman prestasi --}}
-                                <div class="relative aspect-[3/4] overflow-hidden">
-                                    <img src="{{ asset('storage/' . $block['data']['image']) }}"
-                                        class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                {{-- 1. Loop tingkat pertama: Mencari Layout Block --}}
+                @foreach ($unggulanPage->content as $layoutBlock)
+                    @if ($layoutBlock['type'] === 'layout_block')
+                        {{-- 2. Loop tingkat kedua: Masuk ke dalam items (kolom) --}}
+                        @foreach ($layoutBlock['data']['items'] as $item)
+                            {{-- 3. Loop tingkat ketiga: Masuk ke dalam column_content --}}
+                            @foreach ($item['column_content'] as $block)
+                                {{-- 4. Cek apakah tipenya adalah image_block --}}
+                                @if ($block['type'] === 'image_block')
+                                    <div class="flex-none w-[80%] md:w-[40%] lg:w-1/4 snap-start">
+                                        <div
+                                            class="bg-white rounded-[2rem] overflow-hidden shadow-lg border border-gray-100 group">
+                                            <div class="relative aspect-[3/4] overflow-hidden">
+                                                <img src="{{ asset('storage/' . $block['data']['image']) }}"
+                                                    class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
 
-                                    {{-- Overlay Gradient --}}
-                                    <div
-                                        class="absolute inset-0 bg-gradient-to-t from-blue-950/90 via-transparent to-transparent">
-                                    </div>
+                                                <div
+                                                    class="absolute inset-0 bg-gradient-to-t from-blue-950/90 via-transparent to-transparent">
+                                                </div>
 
-                                    {{-- Caption di Dalam Gambar (Style App) --}}
-                                    <div class="absolute bottom-0 p-6">
-                                        <span
-                                            class="bg-pink-600 text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest font-bold mb-3 inline-block">
-                                            Program Unggulan
-                                        </span>
-                                        <h3 class="text-white font-bold text-lg leading-tight line-clamp-2">
-                                            {{ $block['data']['caption'] ?? 'Prestasi Siswa SPENSATA' }}
-                                        </h3>
+                                                <div class="absolute bottom-0 p-6">
+                                                    <span
+                                                        class="bg-pink-600 text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest font-bold mb-3 inline-block">
+                                                        Prestasi
+                                                    </span>
+                                                    <h3 class="text-white font-bold text-lg leading-tight line-clamp-2">
+                                                        {{ $block['data']['caption'] ?? 'Prestasi Siswa SPENSATA' }}
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
+                                @endif
+                            @endforeach
+                        @endforeach
                     @endif
                 @endforeach
 
-                {{-- Spacer Akhir agar card terakhir tidak mentok --}}
-                <div class="flex-none w-1 md:hidden"></div>
             </div>
         </div>
         {{-- --- TOMBOL LIHAT LEBIH BANYAK --- --}}

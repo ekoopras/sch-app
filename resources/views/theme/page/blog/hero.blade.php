@@ -1,23 +1,6 @@
 <section
     class="relative bg-blue-950 w-full min-h-[50vh] md:min-h-[40vh] flex items-center justify-center pt-[15vh] overflow-hidden">
 
-    {{-- Aksen Dekoratif --}}
-    <div class="absolute inset-0 z-0 opacity-30 pointer-events-none">
-        {{-- Bola Statis 1 (Kiri Atas) --}}
-        <div class="absolute -top-10 -left-10 w-64 h-64 bg-pink-500 rounded-full blur-[80px]"></div>
-
-        {{-- Bola Statis 2 (Kanan Tengah) --}}
-        <div class="absolute top-1/2 -right-20 w-80 h-80 bg-blue-400 rounded-full blur-[100px]"></div>
-
-        {{-- Bola Solid (Iconic Hero) --}}
-        <div
-            class="absolute top-20 left-10 md:left-20 w-24 h-24 md:w-32 md:h-32 rounded-full bg-pink-400/20 border border-pink-400/30">
-        </div>
-        <div
-            class="absolute bottom-20 right-10 md:right-40 w-32 h-32 md:w-48 md:h-48 rounded-full bg-cyan-300/10 border border-cyan-300/20">
-        </div>
-    </div>
-
     <div class="w-[90%] md:w-[90%] mx-auto z-10">
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-10 items-center">
 

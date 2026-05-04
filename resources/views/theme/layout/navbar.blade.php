@@ -5,9 +5,10 @@
     <div class="flex items-center h-full justify-between w-[90%] xl:w-[90%] mx-auto">
 
         {{-- logo --}}
-        <div class="flex items-center space-x-3">
+        <a href="{{ url('/') }}" class="flex items-center space-x-3 group">
             {{-- Logo --}}
-            <div class="w-12 h-12 flex items-center justify-center overflow-hidden">
+            <div
+                class="w-12 h-12 flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105">
                 <img src="{{ asset('logoapp.png') }}" alt="logo" class="w-full h-full object-contain">
             </div>
 
@@ -20,7 +21,7 @@
                     SMPN 1 TASIKMADU
                 </p>
             </div>
-        </div>
+        </a>
 
         {{-- Navlink Desktop --}}
         <div class="hidden lg:flex items-center space-x-10">
