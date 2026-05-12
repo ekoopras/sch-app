@@ -16,24 +16,10 @@ class PageController extends Controller
         $prestasiPage = Page::where('slug', 'prestasi-siswa')->first() ?? new Page(['content' => []]);
         $unggulanPage = Page::where('slug', 'program-unggulan')->first() ?? new Page(['content' => []]);
         $fasilitasPage = Page::where('slug', 'fasilitas-sekolah')->first() ?? new Page(['content' => []]);
+        $heroPage = Page::where('slug', 'hero-home-page')->first() ?? new Page(['content' => []]);
 
-        return view('theme.page.home.index', compact('blogs', 'prestasiPage', 'unggulanPage', 'fasilitasPage'));
+        return view('theme.page.home.index', compact('heroPage', 'blogs', 'prestasiPage', 'unggulanPage', 'fasilitasPage'));
     }
-
-    // public function profil()
-    // {
-    //     return view('theme.page.profil.index');
-    // }
-
-    // public function kontak()
-    // {
-
-    //     $page = Page::where('slug', 'kontak')->firstOrFail();
-
-    //     return view('theme.page.kontak.index', [
-    //         'page' => $page
-    //     ]);
-    // }
 
     public function show($slug)
     {

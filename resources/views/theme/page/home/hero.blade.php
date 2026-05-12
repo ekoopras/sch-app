@@ -13,42 +13,91 @@
         </div>
     </div>
 
-    <div class="w-[90%] md:w-[90%] mx-auto items-center grid grid-cols-1 xl:grid-cols-2 gap-10 z-10">
+    <div class="w-[90%] xl:w-[90%] mx-auto relative z-10">
 
-        {{-- Text Content --}}
+        <div class="space-y-12">
+            @foreach ($heroPage->content as $block)
+                {{-- 1. BLOK TEKS STANDAR (FULL WIDTH) --}}
+                @if ($block['type'] === 'text_block')
+                    <div class="max-w-[800px] mx-auto" data-aos="fade-up">
+                        <div
+                            class="custom-misi-content
+                            [&_h1]:text-4xl [&_h1]:font-black [&_h1]:text-blue-950 [&_h1]:mb-6
+                            [&_h2]:text-3xl [&_h2]:font-extrabold [&_h2]:text-blue-900 [&_h2]:mb-5
+                            [&_p]:text-gray-700 [&_p]:text-lg [&_p]:leading-relaxed [&_p]:mb-6
+                            [&_ul_li]:relative [&_ul_li]:pl-8 [&_ul_li]:before:content-['→'] [&_ul_li]:before:text-pink-600 [&_ul_li]:before:absolute [&_ul_li]:before:left-0">
+                            {!! $block['data']['body'] !!}
+                        </div>
+                    </div>
 
+                    {{-- 2. BLOK GAMBAR STANDAR (FULL WIDTH) --}}
+                @elseif($block['type'] === 'image_block')
+                    <div class="py-4 max-w-[900px] mx-auto" data-aos="zoom-in">
+                        <figure>
+                            <div class="overflow-hidden rounded-3xl">
+                                <img src="{{ asset('storage/' . $block['data']['image']) }}"
+                                    class="w-full h-auto object-contain" width="900" height="900">
+                            </div>
+                            @if ($block['data']['caption'])
+                                <figcaption class="mt-4 text-center text-sm text-gray-400 italic">
+                                    {{ $block['data']['caption'] }}</figcaption>
+                            @endif
+                        </figure>
+                    </div>
 
-        <div class="">
-            <p class="text-sm sm:text-base md:text-xl font-bold text-white">
-                SELAMAT DATANG DI SMPN 1 TASIKMADU
-            </p>
-            <h1
-                class="text-4xl md:text-5xl lg:text-5xl mt-6 mb-6 font-bold text-white leading-[2.5rem] md:leading-[4rem]">
-                Membentuk Generasi
-                <span class="text-yellow-300">Unggul, Berkarakter, dan Siap Masa Depan</span>
+                    {{-- 3. BLOK RAW HTML (FULL WIDTH) --}}
+                @elseif($block['type'] === 'raw_html')
+                    <div class="my-8 w-full max-w-screen-xl mx-auto" data-aos="fade-up">
+                        {!! $block['data']['code'] !!}
+                    </div>
 
-            </h1>
-            <p class="text-sm sm:text-base font-medium md:text-md text-gray-300">
-                Sekolah kami berkomitmen memberikan pendidikan berkualitas dengan lingkungan yang inspiratif, inovatif,
-                dan berlandaskan nilai-nilai karakter.
-            </p>
+                    {{-- 4. BLOK LAYOUT (KOLOM/GRID) --}}
+                @elseif($block['type'] === 'layout_block')
+                    <div class="py-8" data-aos="fade-up">
+                        {{-- Grid Container dengan justify-center --}}
+                        <div
+                            class="grid grid-cols-1 md:grid-cols-{{ $block['data']['columns'] }} gap-8 lg:gap-12 justify-center items-start">
 
-            <div class="mt-8 flex items-center space-x-4">
-                <a href="#"
-                    class="px-8 py-3 bg-pink-500 text-white font-semibold rounded-lg hover:bg-pink-600 transition duration-300">
-                    Get Started
-                </a>
-            </div>
+                            @foreach ($block['data']['items'] as $item)
+                                {{-- Jika 1 kolom, kita batasi lebarnya agar enak dibaca --}}
+                                <div
+                                    class="flex flex-col gap-6 w-full mx-auto {{ $block['data']['columns'] == '1' ? 'max-w-3xl' : '' }}">
 
+                                    @foreach ($item['column_content'] as $innerBlock)
+                                        {{-- Sub-Blok Teks --}}
+                                        @if ($innerBlock['type'] === 'text_block')
+                                            <div
+                                                class="custom-misi-content [&_p]:text-base [&_p]:leading-relaxed [&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-blue-950 {{ $block['data']['columns'] == '1' ? 'text-center' : '' }}">
+                                                {!! $innerBlock['data']['body'] !!}
+                                            </div>
+
+                                            {{-- Sub-Blok Gambar --}}
+                                        @elseif ($innerBlock['type'] === 'image_block')
+                                            <div class="rounded-2xl overflow-hidden w-full">
+                                                <img src="{{ asset('storage/' . $innerBlock['data']['image']) }}"
+                                                    class="w-full h-auto">
+                                                @if ($innerBlock['data']['caption'])
+                                                    <p class="p-3 text-xs text-center text-gray-400 bg-gray-50">
+                                                        {{ $innerBlock['data']['caption'] }}</p>
+                                                @endif
+                                            </div>
+
+                                            {{-- Sub-Blok HTML Kustom (Penting: Sudah masuk sini) --}}
+                                        @elseif ($innerBlock['type'] === 'raw_html')
+                                            <div class="w-full">
+                                                {!! $innerBlock['data']['code'] !!}
+                                            </div>
+                                        @endif
+                                    @endforeach
+
+                                </div>
+                            @endforeach
+
+                        </div>
+                    </div>
+                @endif
+            @endforeach
         </div>
-
-        {{-- Image Content --}}
-        <div class="mx-auto" data-aos="fade-left">
-            {{-- Gunakan asset() untuk memanggil gambar dari folder public --}}
-            <img src="{{ asset('hero.png') }}" alt="Hero Image" width="900" height="900"
-                class="w-full h-auto object-contain">
-        </div>
-
 
     </div>
 
