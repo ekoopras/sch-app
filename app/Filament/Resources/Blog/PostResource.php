@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Blog;
 
 use App\Filament\Resources\Blog\PostResource\Pages;
 use App\Filament\Resources\Blog\PostResource\RelationManagers;
+use App\Models\Media;
 use App\Models\Post;
 use Filament\Forms;
 use Filament\Forms\Components\Grid;
@@ -16,12 +17,15 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Actions\Action;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
 
-    protected static ?string $navigationLabel = 'Blog Post';
+    protected static ?string $navigationLabel = 'Blog Artikel';
     protected static ?string $navigationGroup = 'Blog Post';
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
@@ -52,7 +56,8 @@ class PostResource extends Resource
                                         Forms\Components\RichEditor::make('content')
                                             ->label('Isi Konten')
                                             ->required()
-                                            ->columnSpanFull(),
+                                            ->columnSpanFull()
+                                            ->fileAttachmentsDirectory('media'),
                                     ]),
 
                                 Forms\Components\Section::make('Optimasi SEO')
@@ -77,17 +82,37 @@ class PostResource extends Resource
                                             ->searchable()
                                             ->required(),
 
-                                        Forms\Components\FileUpload::make('thumbnail')
-                                            ->label('Thumbnail')
-                                            ->image()
-                                            ->directory('blog/thumbnail')
-                                            ->getUploadedFileNameForStorageUsing(
-                                                fn($file): string => (string) $file->getClientOriginalName(),
-                                            )
-                                            ->preserveFilenames()
+                                        // Forms\Components\FileUpload::make('thumbnail')
+                                        //     ->label('Thumbnail')
+                                        //     ->image()
+                                        //     ->directory('blog/thumbnail')
+                                        //     ->getUploadedFileNameForStorageUsing(
+                                        //         fn($file): string => (string) $file->getClientOriginalName(),
+                                        //     )
+                                        //     ->preserveFilenames()
+                                        //     ->columnSpanFull()
+                                        //     ->maxSize(1024)
+                                        //     ->helperText('Format: JPG, PNG, atau WEBP. Maksimal 1MB.'),
+
+                                        TextInput::make('thumbnail')
+                                            ->label('Thumbnail Artikel')
+                                            ->placeholder('Belum ada foto dipilih')
+                                            ->readonly()
+                                            ->required()
                                             ->columnSpanFull()
-                                            ->maxSize(1024)
-                                            ->helperText('Format: JPG, PNG, atau WEBP. Maksimal 1MB.'),
+                                            ->suffixAction(
+                                                Action::make('bukaModalMedia')
+                                                    ->label('Buka Pustaka / Upload Foto')
+                                                    ->icon('heroicon-m-photo')
+                                                    ->color('primary')
+
+                                                    ->modalHeading('Pustaka Media & Pengunggah')
+                                                    ->modalWidth('6xl')
+                                                    ->modalSubmitAction(false)
+
+                                                    // JALUR AMAN: Panggil via blade view pembungkus Livewire
+                                                    ->modalContent(fn() => view('filament.pages.media-modal-wrapper'))
+                                            ),
 
                                         Forms\Components\Toggle::make('is_published')
                                             ->label('Publish Status')

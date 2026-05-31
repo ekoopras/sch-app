@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Navigation;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,10 +21,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::share('navLinks', config('navlink.navbar'));
-        View::share('navActions', config('navlink.actions'));
-        View::share('prestasiSlides', config('component.slide-show.slides'));
-        View::share('fasilitas', config('content.fasilitas.fasilitas'));
+        View::composer('*', function ($view) {
+            // Ambil data navigasi header dari database
+            $headerMenu = Navigation::where('key', 'header_menu')->first();
+
+            // Kirim array items-nya ke Blade dengan nama variabel $customNavbar
+            $view->with('customNavbar', $headerMenu ? $headerMenu->items : []);
+        });
+
+        View::share('navActions', config('content.navlink.actions'));
+
         View::share('statistic', config('content.statistic.statistic'));
     }
 }

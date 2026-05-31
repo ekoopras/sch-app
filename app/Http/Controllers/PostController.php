@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -9,31 +10,36 @@ class PostController extends Controller
 {
     public function blog()
     {
-        // 1. Tambahkan filter is_published agar draft tidak muncul
-        // 2. Tambahkan eager loading 'category' untuk performa (N+1 Issue)
         $blogs = Post::with('category')
             ->where('is_published', true)
             ->latest()
-            ->paginate(9);
+            ->paginate(6);
 
-        return view('theme.page.blog.index', compact('blogs'));
+        // Ambil data untuk Sidebar di Halaman List Blog
+        $categories = Category::withCount('posts')->get(); // Ambil kategori + jumlah postingannya
+        $recentPosts = Post::where('is_published', true)->latest()->take(5)->get();
+
+        // Kembalikan ke view bersama data sidebar
+        return view('theme.page.blog.index', compact('blogs', 'categories', 'recentPosts'));
     }
 
     public function show($slug)
     {
-        // Cari post yang aktif saja
         $post = Post::with('category')
             ->where('slug', $slug)
             ->where('is_published', true)
             ->firstOrFail();
 
-        // Ambil postingan terbaru (pastikan hanya yang published)
+        // Ambil postingan terbaru untuk sidebar (kecuali post yang sedang dibaca)
         $recentPosts = Post::where('id', '!=', $post->id)
-            ->where('is_published', true) // Penting! Jangan tampilkan draft di sidebar
+            ->where('is_published', true)
             ->latest()
-            ->take(5)
+            ->take(10)
             ->get();
 
-        return view('theme.page.blog.show.show', compact('post', 'recentPosts'));
+        // Ambil data kategori untuk sidebar di halaman detail juga
+        $categories = Category::withCount('posts')->get();
+
+        return view('theme.page.blog.show.show', compact('post', 'recentPosts', 'categories'));
     }
 }

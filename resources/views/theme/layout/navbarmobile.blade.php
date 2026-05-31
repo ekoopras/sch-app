@@ -1,8 +1,15 @@
+@php
+    $isHome = request()->is('/');
+@endphp
+
 <div x-data="{ open: false }" class="lg:hidden">
     {{-- Header Mobile (Selalu Muncul) --}}
-    <nav x-data="{ navBg: false }" x-on:scroll.window="navBg = (window.pageYOffset > 20) ? true : false"
-        :class="navBg ? 'bg-blue-900 shadow-md' : 'bg-transparent'"
-        class="fixed top-0 left-0 w-full h-[10vh] z-[150] transition-all duration-300 px-5 flex items-center justify-between">
+    <nav x-data="{
+        navBg: false,
+        isHome: {{ request()->is('/') ? 'true' : 'false' }}
+    }" x-on:scroll.window="navBg = (window.pageYOffset > 20) ? true : false"
+        :class="(isHome && !navBg) ? 'bg-transparent' : 'bg-blue-900 shadow-md'"
+        class="lg:hidden fixed top-0 left-0 w-full h-[10vh] z-[150] transition-all duration-300 px-5 flex items-center justify-between">
 
         {{-- logo --}}
         <a href="{{ url('/') }}" class="flex items-center space-x-3 group">
@@ -49,12 +56,14 @@
         style="display: none;">
 
         <div class="flex flex-col space-y-6 pb-10">
-            @foreach ($navLinks as $link)
-                @if (isset($link['child']) && is_array($link['child']) && count($link['child']) > 0)
+            @foreach ($customNavbar as $link) {{-- Sesuaikan nama variabel dengan yang dikirim dari AppServiceProvider --}}
+
+                {{-- 1. RENDER JIKA MENU UTAMA ADALAH DROPDOWN --}}
+                @if (isset($link['is_dropdown']) && $link['is_dropdown'])
                     {{-- Accordion untuk Dropdown di Mobile --}}
-                    <div x-data="{ subOpen: false }">
+                    <div x-data="{ subOpen: false }" class="py-2">
                         <button @click="subOpen = !subOpen"
-                            class="flex items-center justify-between w-full text-2xl font-bold text-white">
+                            class="flex items-center justify-between w-full text-2xl font-bold text-white focus:outline-none">
                             <span>{{ $link['label'] }}</span>
                             <svg :class="subOpen ? 'rotate-180' : ''" class="w-6 h-6 transition-transform text-pink-500"
                                 fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -62,24 +71,61 @@
                                     d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
-                        {{-- Gunakan x-show agar smooth saat dibuka --}}
+
+                        {{-- Isi Anak Menu Dropdown --}}
                         <div x-show="subOpen" x-transition
                             class="mt-4 ml-4 space-y-4 border-l-2 border-pink-500/30 pl-4">
-                            @foreach ($link['child'] as $sub)
-                                <a href="{{ url($sub['url']) }}"
-                                    class="block text-lg text-gray-300 hover:text-pink-300">
-                                    {{ $sub['label'] }}
-                                </a>
-                            @endforeach
+
+                            @if (isset($link['children']) && is_array($link['children']))
+                                @foreach ($link['children'] as $sub)
+                                    @php
+                                        // Mengurai arah URL anak menu secara dinamis untuk mobile
+                                        $subUrl = '#';
+                                        if ($sub['type'] === 'url') {
+                                            $subUrl = url($sub['url']);
+                                        } elseif ($sub['type'] === 'page') {
+                                            $subUrl = url('page/' . $sub['page_slug']);
+                                        } elseif ($sub['type'] === 'category') {
+                                            $subUrl = !empty($sub['post_slug'])
+                                                ? url('blog/' . $sub['post_slug'])
+                                                : url('blog?category=' . $sub['category_slug']);
+                                        }
+                                    @endphp
+
+                                    <a href="{{ $subUrl }}"
+                                        class="block text-lg text-gray-300 hover:text-pink-300 transition-colors font-medium">
+                                        {{ $sub['label'] }}
+                                    </a>
+                                @endforeach
+                            @endif
+
                         </div>
                     </div>
+
+                    {{-- 2. RENDER JIKA MENU UTAMA ADALAH LINK BIASA --}}
                 @else
-                    {{-- Nav Link Biasa --}}
-                    <a href="{{ url($link['url']) }}"
-                        class="text-2xl font-bold {{ request()->is($link['url']) ? 'text-pink-400' : 'text-white' }}">
-                        {{ $link['label'] }}
-                    </a>
+                    @php
+                        // Mengurai arah URL menu utama secara dinamis
+                        $targetUrl = '#';
+                        if ($link['type'] === 'url') {
+                            $targetUrl = url($link['url']);
+                        } elseif ($link['type'] === 'page') {
+                            $targetUrl = url('page/' . $link['page_slug']);
+                        } elseif ($link['type'] === 'category') {
+                            $targetUrl = !empty($link['post_slug'])
+                                ? url('blog/' . $link['post_slug'])
+                                : url('blog?category=' . $link['category_slug']);
+                        }
+                    @endphp
+
+                    <div class="py-2">
+                        <a href="{{ $targetUrl }}"
+                            class="text-2xl font-bold block {{ request()->is(ltrim($targetUrl, url('/'))) ? 'text-pink-400' : 'text-white' }} hover:text-pink-300 transition-colors">
+                            {{ $link['label'] }}
+                        </a>
+                    </div>
                 @endif
+
             @endforeach
 
             <hr class="border-white/10 my-4">
@@ -103,3 +149,7 @@
         </div>
     </div>
 </div>
+
+@if (!$isHome)
+    <div class="h-[12vh] w-full"></div>
+@endif

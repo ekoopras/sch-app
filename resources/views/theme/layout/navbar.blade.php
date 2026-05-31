@@ -1,5 +1,12 @@
-<nav x-data="{ navBg: false }" x-on:scroll.window="navBg = (window.pageYOffset > 20) ? true : false"
-    :class="navBg ? 'bg-blue-900 shadow-md' : 'bg-transparent'"
+@php
+    $isHome = request()->is('/');
+@endphp
+
+<nav x-data="{
+    navBg: false,
+    isHome: {{ $isHome ? 'true' : 'false' }}
+}" x-on:scroll.window="navBg = (window.pageYOffset > 20) ? true : false"
+    :class="(isHome && !navBg) ? 'bg-transparent' : 'bg-blue-900 shadow-lg'"
     class="hidden lg:block fixed top-0 left-0 w-full h-[12vh] z-[100] transition-all duration-300">
 
     <div class="flex items-center h-full justify-between w-[90%] xl:w-[90%] mx-auto">
@@ -25,12 +32,13 @@
 
         {{-- Navlink Desktop --}}
         <div class="hidden lg:flex items-center space-x-10">
-            @foreach ($navLinks as $link)
-                @if (isset($link['child']))
-                    {{-- RENDER: DROPDOWN --}}
+            @foreach ($customNavbar as $link) {{-- Ganti $customNavbar jadi $navLinks jika di AppServiceProvider kamu pakai nama itu --}}
+
+                {{-- 1. RENDER JIKA ADMIN MEMILIH MENU SEBAGAI DROPDOWN --}}
+                @if (isset($link['is_dropdown']) && $link['is_dropdown'])
                     <div class="relative group py-4">
                         <button
-                            class="flex items-center space-x-1 text-white hover:text-pink-300 font-semibold transition-all">
+                            class="flex items-center space-x-1 text-white hover:text-pink-300 font-semibold transition-all focus:outline-none">
                             <span>{{ $link['label'] }}</span>
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none"
@@ -42,29 +50,56 @@
 
                         {{-- Dropdown Menu Content --}}
                         <div
-                            class="absolute left-0 top-full hidden group-hover:block w-52 bg-white rounded-xl shadow-xl py-3 z-[150] border border-gray-100">
-                            {{-- Cek apakah key 'child' ada dan tidak kosong --}}
-                            @if (isset($link['child']) && is_array($link['child']))
-                                @foreach ($link['child'] as $sub)
-                                    {{-- Gunakan url() karena data kita berupa slug 'selayang-pandang' --}}
-                                    <a href="{{ url($sub['url']) }}"
-                                        class="block px-5 py-2.5 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors">
+                            class="absolute left-0 top-full hidden group-hover:block w-56 bg-white rounded-xl shadow-xl py-3 z-[150] border border-gray-100">
+
+                            {{-- Lakukan looping anak menu berdasarkan key 'children' dari Filament --}}
+                            @if (isset($link['children']) && is_array($link['children']))
+                                @foreach ($link['children'] as $sub)
+                                    @php
+                                        // Mengurai arah URL anak menu secara dinamis
+                                        $subUrl = '#';
+                                        if ($sub['type'] === 'url') {
+                                            $subUrl = url($sub['url']);
+                                        } elseif ($sub['type'] === 'page') {
+                                            $subUrl = url('page/' . $sub['page_slug']);
+                                        } elseif ($sub['type'] === 'category') {
+                                            $subUrl = !empty($sub['post_slug'])
+                                                ? url('blog/' . $sub['post_slug'])
+                                                : url('blog?category=' . $sub['category_slug']);
+                                        }
+                                    @endphp
+
+                                    <a href="{{ $subUrl }}"
+                                        class="block px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors">
                                         {{ $sub['label'] }}
                                     </a>
                                 @endforeach
                             @endif
                         </div>
                     </div>
+
+                    {{-- 2. RENDER JIKA ADMIN MEMILIH LINK BIASA --}}
                 @else
-                    {{-- RENDER: LINK BIASA --}}
-                    {{-- <a href="{{ route($link['url']) }}" --}}
-                    <a href="{{ url($link['url']) }}"
-                        class="{{ request()->routeIs($link['url']) ? 'text-pink-300' : 'text-white' }} hover:text-pink-300 font-semibold transition-all">
+                    @php
+                        // Mengurai arah URL menu utama secara dinamis
+                        $targetUrl = '#';
+                        if ($link['type'] === 'url') {
+                            $targetUrl = url($link['url']);
+                        } elseif ($link['type'] === 'page') {
+                            $targetUrl = url('page/' . $link['page_slug']);
+                        } elseif ($link['type'] === 'category') {
+                            $targetUrl = !empty($link['post_slug'])
+                                ? url('blog/' . $link['post_slug'])
+                                : url('blog?category=' . $link['category_slug']);
+                        }
+                    @endphp
+
+                    <a href="{{ $targetUrl }}" class="text-white hover:text-pink-300 font-semibold transition-all">
                         {{ $link['label'] }}
                     </a>
                 @endif
-            @endforeach
 
+            @endforeach
         </div>
 
         <div class="hidden lg:flex items-center space-x-4">
@@ -78,3 +113,7 @@
 
     </div>
 </nav>
+
+@if (!$isHome)
+    <div class="w-full bg-blue-900"></div>
+@endif

@@ -2,29 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Page;
+use App\Models\Category;
 use App\Models\Post;
-use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
     public function index()
     {
-        $blogs = Post::latest()->take(6)->get();
+        $newpost = Post::latest()->take(6)->get();
 
-        // Gunakan null coalescing untuk menghindari error 'Attempt to read property on null'
-        $prestasiPage = Page::where('slug', 'prestasi-siswa')->first() ?? new Page(['content' => []]);
-        $unggulanPage = Page::where('slug', 'program-unggulan')->first() ?? new Page(['content' => []]);
-        $fasilitasPage = Page::where('slug', 'fasilitas-sekolah')->first() ?? new Page(['content' => []]);
-        $heroPage = Page::where('slug', 'hero-home-page')->first() ?? new Page(['content' => []]);
+        $blogs = Post::whereHas('category', function ($query) {
+            $query->whereNotIn('slug', ['pengumuman', 'sambutan', 'prestasi-siswa']); // Menggunakan whereNotIn untuk mengecualikan banyak slug sekaligus
+        })->latest()->take(6)->get();
 
-        return view('theme.page.home.index', compact('heroPage', 'blogs', 'prestasiPage', 'unggulanPage', 'fasilitasPage'));
-    }
+        // 2. Ambil data pengumuman (PASTIKAN VARIABEL INI ADA)
+        $pengumuman = Post::whereHas('category', function ($query) {
+            $query->where('slug', 'pengumuman');
+        })->latest()->take(3)->get();
 
-    public function show($slug)
-    {
-        $page = Page::where('slug', $slug)->firstOrFail();
+        $sambutan = Post::whereHas('category', function ($query) {
+            $query->where('slug', 'sambutan');
+        })->latest()->take(3)->get();
 
-        return view('theme.page.show.index', compact('page'));
+        $prestasi = Post::whereHas('category', function ($query) {
+            $query->where('slug', 'prestasi-siswa');
+        })->latest()->take(6)->get();
+
+        $categories = Category::all();
+
+        return view('theme.page.home.index', compact(
+            'blogs',
+            'prestasi',
+            'sambutan',
+            'pengumuman',
+            'newpost',
+            'categories',
+        ));
     }
 }

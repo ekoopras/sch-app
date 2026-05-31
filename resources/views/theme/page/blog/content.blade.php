@@ -1,68 +1,61 @@
-<section class="py-16 bg-white">
-    <div class="w-[90%] mx-auto">
+<section class="bg-white">
+    <div class="w-full mx-auto"> {{-- Diubah ke w-full karena parent luar (index.blade) sudah mengunci w-[90%] --}}
 
-        {{-- Grid Wrapper --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+        {{-- Grid Wrapper: Diberi gap-y-16 agar judul melayang baris pertama tidak menabrak gambar baris kedua --}}
+        <div class="grid grid-cols-2 lg:grid-cols-2 gap-x-4 gap-y-20 md:gap-x-8 md:gap-y-16 pb-12">
 
-            @forelse($blogs as $post)
-                <article
-                    class="group bg-white rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden"
-                    data-aos="fade-up">
-                    {{-- Image Container --}}
-                    <div class="relative overflow-hidden aspect-video md:aspect-[4/3]">
-                        <img src="{{ asset('storage/' . $post->thumbnail) }}" alt="{{ $post->title }}"
-                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+            @forelse($blogs as $item)
+                {{-- CARD BERGAYA 2 KOLOM MOBILE --}}
+                <div class="w-full relative group cursor-pointer" data-aos="fade-up">
 
-                        {{-- Badge Kategori --}}
-                        <div class="absolute top-5 left-5">
+                    {{-- Gambar / Thumbnail --}}
+                    <div
+                        class="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm border border-gray-100 relative bg-gray-50">
+                        @if ($item->thumbnail)
+                            <img src="{{ asset('storage/' . $item->thumbnail) }}" alt="{{ $item->title }}"
+                                class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                        @else
+                            <div
+                                class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-900 to-indigo-950 text-white font-bold text-[10px] md:text-lg select-none text-center p-2">
+                                SPENSATA INFO
+                            </div>
+                        @endif
+
+                        {{-- Badge Kategori: Dibuat hidden di HP (sm:block) agar tidak menabrak badge admin karena layar sempit --}}
+                        <div class="absolute top-2 right-2 md:top-4 md:right-4 z-20 hidden sm:block">
                             <span
-                                class="bg-white/90 backdrop-blur-md text-blue-950 text-[10px] px-4 py-1.5 rounded-full uppercase tracking-widest font-bold shadow-sm">
-                                {{ $post->category->name ?? 'Berita' }}
+                                class="bg-white/90 backdrop-blur-md text-blue-950 text-[9px] md:text-[10px] px-2.5 py-1 rounded-md uppercase tracking-widest font-bold shadow-sm">
+                                {{ $item->category->name ?? 'Berita' }}
                             </span>
                         </div>
 
-                        {{-- Overlay saat Hover --}}
+                        {{-- Badge Admin: Ukuran disesuaikan mengecil di HP --}}
                         <div
-                            class="absolute inset-0 bg-blue-950/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            class="absolute top-2 left-2 md:top-4 md:left-4 z-20 flex items-center gap-1 bg-emerald-600 text-white text-[9px] md:text-xs font-semibold px-2 py-1 rounded-md shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                class="w-3 h-3 md:w-3.5 md:h-3.5">
+                                <path fill-rule="evenodd"
+                                    d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <span>admin</span>
                         </div>
                     </div>
 
-                    {{-- Konten Teks --}}
-                    <div class="p-8"> {{-- Diubah dari px-2 ke p-8 agar konten tidak mepet border --}}
-                        <div class="flex items-center gap-3 text-gray-400 text-xs mb-4 font-medium">
-                            <span class="flex items-center gap-1.5">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                {{ $post->created_at->format('d M Y') }}
-                            </span>
-                        </div>
-
+                    {{-- Kotak Judul Melayang: Padding (p-2.5) & Text (text-xs) disesuaikan khusus HP --}}
+                    <div
+                        class="absolute left-1.5 right-1.5 bottom-0 translate-y-[30%] md:translate-y-[25%] z-30 bg-white rounded-xl shadow-md border border-gray-100 p-2.5 md:p-4 min-h-[65px] md:min-h-[90px] flex items-center justify-center text-center group-hover:border-pink-500 transition-colors duration-300">
                         <h3
-                            class="text-xl md:text-2xl font-bold text-blue-950 group-hover:text-pink-600 transition-colors line-clamp-2 leading-snug mb-4">
-                            <a href="{{ route('blog.show', $post->slug) }}">
-                                {{ $post->title }}
+                            class="text-[11px] sm:text-xs md:text-base font-extrabold text-blue-950 tracking-wide uppercase line-clamp-2 leading-tight">
+                            <a href="{{ url('blog/' . $item->slug) }}"
+                                class="group-hover:text-pink-600 transition block w-full">
+                                {{ $item->title }}
                             </a>
                         </h3>
-
-                        <p class="text-gray-500 text-sm md:text-base line-clamp-2 mb-8 leading-relaxed">
-                            {{ Str::limit(strip_tags($post->content), 120) }}
-                        </p>
-
-                        <a href="{{ route('blog.show', $post->slug) }}"
-                            class="inline-flex items-center gap-3 text-blue-950 font-bold text-sm group/btn">
-                            <span>Baca Selengkapnya</span>
-                            <div
-                                class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center group-hover/btn:bg-blue-950 group-hover/btn:text-white transition-all shadow-sm">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
-                            </div>
-                        </a>
                     </div>
-                </article>
+
+                </div>
+
             @empty
                 <div class="col-span-full py-20 text-center">
                     <div class="inline-flex items-center justify-center w-20 h-20 bg-gray-100 rounded-full mb-4">
@@ -77,32 +70,69 @@
 
         </div>
 
-        {{-- Pagination Simpel (Sesuai Request) --}}
+        {{-- Pagination Bergaya Kotak Hijau Elegan Sesuai Gambar --}}
         @if ($blogs->hasPages())
-            <div class="mt-20 flex justify-center items-center gap-4">
-                @if (!$blogs->onFirstPage())
-                    <a href="{{ $blogs->previousPageUrl() }}"
-                        class="flex items-center gap-2 px-6 py-3 bg-white border-2 border-blue-950 text-blue-950 font-bold rounded-full hover:bg-blue-950 hover:text-white transition-all duration-300">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path d="M15 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <div class="mt-24 flex justify-center items-center gap-2 sm:gap-4 select-none">
+
+                {{-- TOMBOL PREV --}}
+                @if ($blogs->onFirstPage())
+                    <span
+                        class="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-gray-300 cursor-not-allowed">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M15 19l-7-7 7-7" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
                         </svg>
-                        Prev
+                        PREV
+                    </span>
+                @else
+                    <a href="{{ $blogs->previousPageUrl() }}"
+                        class="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-blue-950 hover:text-[#149464] transition-colors duration-200">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M15 19l-7-7 7-7" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        PREV
                     </a>
                 @endif
 
-                <span class="px-6 py-3 bg-blue-50 text-blue-950 font-bold rounded-full text-sm">
-                    {{ $blogs->currentPage() }}
-                </span>
+                {{-- LOOPING NOMOR HALAMAN --}}
+                <div class="flex items-center gap-2">
+                    @foreach ($blogs->getUrlRange(1, $blogs->lastPage()) as $page => $url)
+                        @if ($page == $blogs->currentPage())
+                            {{-- STATE AKTIF: Kotak Hijau Penuh, Teks Putih (Angka 2 di Gambar) --}}
+                            <span
+                                class="w-11 h-11 rounded-xl bg-[#149464] text-white font-extrabold flex items-center justify-center text-base shadow-sm shadow-[#149464]/20">
+                                {{ $page }}
+                            </span>
+                        @else
+                            {{-- STATE BIASA: Kotak Putih/Abu, Border Hijau, Teks Gelap (Angka 1, 3, 4 di Gambar) --}}
+                            <a href="{{ $url }}"
+                                class="w-11 h-11 rounded-xl bg-gray-50 border border-[#149464] text-blue-950 font-extrabold flex items-center justify-center text-base hover:bg-[#149464] hover:text-white transition-all duration-300 active:scale-95">
+                                {{ $page }}
+                            </a>
+                        @endif
+                    @endforeach
+                </div>
 
+                {{-- TOMBOL NEXT --}}
                 @if ($blogs->hasMorePages())
                     <a href="{{ $blogs->nextPageUrl() }}"
-                        class="flex items-center gap-2 px-6 py-3 bg-blue-950 text-white font-bold rounded-full hover:bg-pink-600 transition-all duration-300 shadow-lg shadow-blue-900/10">
-                        Next
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        class="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-blue-950 hover:text-[#149464] transition-colors duration-200">
+                        NEXT
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 5l7 7-7 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </a>
+                @else
+                    <span
+                        class="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-gray-300 cursor-not-allowed">
+                        NEXT
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 5l7 7-7 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </span>
                 @endif
+
             </div>
         @endif
 

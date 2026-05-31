@@ -15,88 +15,38 @@
 
     <div class="w-[90%] xl:w-[90%] mx-auto relative z-10">
 
-        <div class="space-y-12">
-            @foreach ($heroPage->content as $block)
-                {{-- 1. BLOK TEKS STANDAR (FULL WIDTH) --}}
-                @if ($block['type'] === 'text_block')
-                    <div class="max-w-[800px] mx-auto" data-aos="fade-up">
-                        <div
-                            class="custom-misi-content
-                            [&_h1]:text-4xl [&_h1]:font-black [&_h1]:text-blue-950 [&_h1]:mb-6
-                            [&_h2]:text-3xl [&_h2]:font-extrabold [&_h2]:text-blue-900 [&_h2]:mb-5
-                            [&_p]:text-gray-700 [&_p]:text-lg [&_p]:leading-relaxed [&_p]:mb-6
-                            [&_ul_li]:relative [&_ul_li]:pl-8 [&_ul_li]:before:content-['→'] [&_ul_li]:before:text-pink-600 [&_ul_li]:before:absolute [&_ul_li]:before:left-0">
-                            {!! $block['data']['body'] !!}
-                        </div>
-                    </div>
+        {{-- Gunakan Grid System Tailwind: Teks di Kiri (Lebar 7 Kolom), Sisi Kanan (Bisa buat Foto Sekolah Besok/Lebar 5 Kolom) --}}
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
-                    {{-- 2. BLOK GAMBAR STANDAR (FULL WIDTH) --}}
-                @elseif($block['type'] === 'image_block')
-                    <div class="py-4 max-w-[900px] mx-auto" data-aos="zoom-in">
-                        <figure>
-                            <div class="overflow-hidden rounded-3xl">
-                                <img src="{{ asset('storage/' . $block['data']['image']) }}"
-                                    class="w-full h-auto object-contain" width="900" height="900">
-                            </div>
-                            @if ($block['data']['caption'])
-                                <figcaption class="mt-4 text-center text-sm text-gray-400 italic">
-                                    {{ $block['data']['caption'] }}</figcaption>
-                            @endif
-                        </figure>
-                    </div>
+            {{-- SISI KIRI: Blok Teks Manual Kebanggaanmu (data-aos diaktifkan kembali biar ada animasi smooth) --}}
+            <div class="lg:col-span-6 space-y-6 text-left" data-aos="fade-right" data-aos-duration="1000">
 
-                    {{-- 3. BLOK RAW HTML (FULL WIDTH) --}}
-                @elseif($block['type'] === 'raw_html')
-                    <div class="my-8 w-full max-w-screen-xl mx-auto" data-aos="fade-up">
-                        {!! $block['data']['code'] !!}
-                    </div>
+                {{-- Sub-Headline / Salam Pembuka --}}
+                <p class="text-xs sm:text-sm md:text-base font-extrabold text-pink-400 tracking-widest uppercase">
+                    SELAMAT DATANG DI SMPN 1 TASIKMADU
+                </p>
 
-                    {{-- 4. BLOK LAYOUT (KOLOM/GRID) --}}
-                @elseif($block['type'] === 'layout_block')
-                    <div class="py-8" data-aos="fade-up">
-                        {{-- Grid Container dengan justify-center --}}
-                        <div
-                            class="grid grid-cols-1 md:grid-cols-{{ $block['data']['columns'] }} gap-8 lg:gap-12 justify-center items-start">
+                {{-- Headline Utama dengan Variasi Warna Kuning --}}
+                <h1
+                    class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight sm:leading-snug md:leading-tight">
+                    Membentuk Generasi
+                    <span class="text-yellow-300 block sm:inline-block mt-1 sm:mt-0">Unggul, Berkarakter, dan Siap Masa
+                        Depan</span>
+                </h1>
 
-                            @foreach ($block['data']['items'] as $item)
-                                {{-- Jika 1 kolom, kita batasi lebarnya agar enak dibaca --}}
-                                <div
-                                    class="flex flex-col gap-6 w-full mx-auto {{ $block['data']['columns'] == '1' ? 'max-w-3xl' : '' }}">
+                {{-- Deskripsi Singkat Sekolah (Diberi Batasan Lebar max-w agar baris kalimat tidak terlalu panjang ke kanan) --}}
+                <p class="text-sm sm:text-base md:text-lg font-medium text-gray-300/90 leading-relaxed max-w-2xl">
+                    Sekolah kami berkomitmen memberikan pendidikan berkualitas dengan lingkungan yang inspiratif,
+                    inovatif, dan berlandaskan nilai-nilai karakter.
+                </p>
 
-                                    @foreach ($item['column_content'] as $innerBlock)
-                                        {{-- Sub-Blok Teks --}}
-                                        @if ($innerBlock['type'] === 'text_block')
-                                            <div
-                                                class="custom-misi-content [&_p]:text-base [&_p]:leading-relaxed [&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-blue-950 {{ $block['data']['columns'] == '1' ? 'text-center' : '' }}">
-                                                {!! $innerBlock['data']['body'] !!}
-                                            </div>
+            </div>
 
-                                            {{-- Sub-Blok Gambar --}}
-                                        @elseif ($innerBlock['type'] === 'image_block')
-                                            <div class="rounded-2xl overflow-hidden w-full">
-                                                <img src="{{ asset('storage/' . $innerBlock['data']['image']) }}"
-                                                    class="w-full h-auto">
-                                                @if ($innerBlock['data']['caption'])
-                                                    <p class="p-3 text-xs text-center text-gray-400 bg-gray-50">
-                                                        {{ $innerBlock['data']['caption'] }}</p>
-                                                @endif
-                                            </div>
+            {{-- SISI KANAN: Tempat Menaruh Foto Sekolah atau Maskot (Sudah Aktif Menggunakan Tag IMG) --}}
+            <div class="lg:col-span-6 lg:block" data-aos="fade-left" data-aos-duration="1000">
+                <img src="{{ asset('hero.png') }}" alt="Logo SMPN 1 Tasikmadu">
+            </div>
 
-                                            {{-- Sub-Blok HTML Kustom (Penting: Sudah masuk sini) --}}
-                                        @elseif ($innerBlock['type'] === 'raw_html')
-                                            <div class="w-full">
-                                                {!! $innerBlock['data']['code'] !!}
-                                            </div>
-                                        @endif
-                                    @endforeach
-
-                                </div>
-                            @endforeach
-
-                        </div>
-                    </div>
-                @endif
-            @endforeach
         </div>
 
     </div>
