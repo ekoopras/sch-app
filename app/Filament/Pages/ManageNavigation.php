@@ -129,7 +129,6 @@ class ManageNavigation extends Page implements HasActions // <--- Tambahkan impl
                                     ->reactive()
                                     ->options([
                                         'url' => 'Custom URL / Link Luar',
-                                        'page' => 'Halaman Statis (Page)',
                                         'category' => 'Kategori Blog',
                                     ]),
 
@@ -137,12 +136,6 @@ class ManageNavigation extends Page implements HasActions // <--- Tambahkan impl
                                     ->label('Alamat URL')
                                     ->visible(fn(callable $get) => $get('type') === 'url')
                                     ->required(fn(callable $get) => $get('type') === 'url'),
-
-                                Select::make('page_slug')
-                                    ->label('Pilih Halaman Statis')
-                                    ->options(StaticPage::pluck('title', 'slug'))
-                                    ->visible(fn(callable $get) => $get('type') === 'page')
-                                    ->required(fn(callable $get) => $get('type') === 'page'),
 
                                 Select::make('category_slug')
                                     ->label('Pilih Kategori Blog')
