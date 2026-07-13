@@ -74,6 +74,8 @@
         @yield('content')
     </main>
 
+    @include('theme.layout.chat-wa')
+
     @include('theme.layout.footer')
 
 

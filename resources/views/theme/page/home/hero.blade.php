@@ -44,7 +44,7 @@
 
             {{-- SISI KANAN: Tempat Menaruh Foto Sekolah atau Maskot (Sudah Aktif Menggunakan Tag IMG) --}}
             <div class="lg:col-span-6 lg:block" data-aos="fade-left" data-aos-duration="1000">
-                <img src="{{ asset('hero.png') }}" alt="Logo SMPN 1 Tasikmadu">
+                <img src="{{ asset('benner.png') }}" alt="Logo SMPN 1 Tasikmadu">
             </div>
 
         </div>
@@ -55,7 +55,7 @@
 
 {{-- Section Wave Divider --}}
 <div class="relative w-full overflow-hidden leading-[0] bg-blue-950 -mt-1">
-    {{-- 
+    {{--
         - scale-y-[-1] : Membalikkan gelombang secara vertikal (Mirror)
         - text-blue-950 : Memberikan warna biru yang sama persis dengan Hero
     --}}
