@@ -1,6 +1,6 @@
 <footer class="bg-blue-950 text-white pt-20 pb-10 overflow-hidden ">
     <div class="w-[90%] xl:w-[90%] mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-16">
 
             {{-- Kolom 1: Profil Singkat --}}
             <div class="space-y-6">
@@ -26,45 +26,22 @@
                 </p>
                 {{-- Sosial Media --}}
                 <div class="flex gap-4">
-                    <a href="#"
+                    <a href="https://www.instagram.com/spensata_official/"
                         class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-pink-500 transition-all duration-300">
                         <i class="fab fa-facebook-f text-sm"></i>
                     </a>
-                    <a href="#"
+                    <a href="https://www.instagram.com/spensata_official/"
                         class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-pink-500 transition-all duration-300">
                         <i class="fab fa-instagram text-sm"></i>
                     </a>
-                    <a href="#"
+                    <a href="https://www.youtube.com/@smpn1tasikmadu736"
                         class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-pink-500 transition-all duration-300">
                         <i class="fab fa-youtube text-sm"></i>
                     </a>
                 </div>
             </div>
 
-            {{-- Kolom 2: Navigasi Cepat --}}
-            <div>
-                <h4 class="text-lg font-bold mb-6 relative inline-block">
-                    Tautan Cepat
-                    <span class="absolute -bottom-2 left-0 w-8 h-1 bg-pink-500 rounded-full"></span>
-                </h4>
-                <ul class="space-y-4 text-gray-400 text-sm">
-                    <li><a href="#"
-                            class="hover:text-pink-400 transition-colors flex items-center gap-2"><span>&rsaquo;</span>
-                            Profil Sekolah</a></li>
-                    <li><a href="#"
-                            class="hover:text-pink-400 transition-colors flex items-center gap-2"><span>&rsaquo;</span>
-                            Program Unggulan</a></li>
-                    <li><a href="#"
-                            class="hover:text-pink-400 transition-colors flex items-center gap-2"><span>&rsaquo;</span>
-                            Fasilitas Siswa</a></li>
-                    <li><a href="#"
-                            class="hover:text-pink-400 transition-colors flex items-center gap-2"><span>&rsaquo;</span>
-                            Berita & Kegiatan</a></li>
-                    <li><a href="#"
-                            class="hover:text-pink-400 transition-colors flex items-center gap-2"><span>&rsaquo;</span>
-                            PPDB Online</a></li>
-                </ul>
-            </div>
+
 
             {{-- Kolom 3: Kontak --}}
             <div>
@@ -79,7 +56,7 @@
                     </li>
                     <li class="flex items-center gap-4">
                         <span class="text-pink-500"><i class="fas fa-phone-alt"></i></span>
-                        <span>(0271) 495572</span>
+                        <span>+62 821-3220-6816</span>
                     </li>
                     <li class="flex items-center gap-4">
                         <span class="text-pink-500"><i class="fas fa-envelope"></i></span>
