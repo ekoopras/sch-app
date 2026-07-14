@@ -35,22 +35,23 @@
             x-ref="sliderContainer" @scroll.debounce.100ms="updateIndex()">
 
             @forelse ($newpost as $index => $item)
-                {{-- CARD ITEM (UKURAN ALA ANDROID APP) --}}
-                {{-- w-[85%] di HP biar card sebelah kanan kelihatan ngintip sedikit --}}
-                {{-- sm:w-[45%] di tablet, md:w-[31%] di laptop/PC --}}
-                <div class="w-[85%] sm:w-[45%] md:w-[31%] shrink-0 snap-center relative group cursor-pointer">
+            {{-- CARD ITEM (UKURAN ALA ANDROID APP) --}}
+            {{-- w-[85%] di HP biar card sebelah kanan kelihatan ngintip sedikit --}}
+            {{-- sm:w-[45%] di tablet, md:w-[31%] di laptop/PC --}}
+            <div class="w-[85%] sm:w-[45%] md:w-[31%] shrink-0 snap-center relative group cursor-pointer">
 
-                    {{-- Gambar / Thumbnail (Tinggi sudah disesuaikan agar proporsional) --}}
+                {{-- Gambar / Thumbnail (Tinggi sudah disesuaikan agar proporsional) --}}
+                <a href="{{ url('blog/' . $item->slug) }}">
                     <div
                         class="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm border border-gray-100 relative bg-gray-50">
                         @if ($item->thumbnail)
-                            <img src="{{ asset('storage/' . $item->thumbnail) }}" alt="{{ $item->title }}"
-                                class="w-full h-full object-cover">
+                        <img src="{{ asset('storage/' . $item->thumbnail) }}" alt="{{ $item->title }}"
+                            class="w-full h-full object-cover">
                         @else
-                            <div
-                                class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-900 to-indigo-950 text-white font-bold text-lg select-none">
-                                SPENSATA INFO
-                            </div>
+                        <div
+                            class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-900 to-indigo-950 text-white font-bold text-lg select-none">
+                            SPENSATA INFO
+                        </div>
                         @endif
 
                         {{-- Badge Admin --}}
@@ -71,33 +72,35 @@
                         class="absolute left-3 right-3 bottom-0 translate-y-[25%] z-30 bg-white rounded-xl shadow-lg border border-gray-100 p-4 min-h-[90px] flex items-center justify-center text-center">
                         <h3
                             class="text-sm md:text-base font-extrabold text-blue-950 tracking-wide uppercase line-clamp-2 leading-snug">
-                            <a href="{{ url('blog/' . $item->slug) }}"
+                            <div
                                 class="hover:text-blue-800 transition block w-full">
                                 {{ $item->title }}
-                            </a>
+                            </div>
                         </h3>
                     </div>
 
-                </div>
+                </a>
+
+            </div>
             @empty
-                <div class="text-center py-12 text-gray-400 italic w-full">
-                    Belum ada data artikel post saat ini.
-                </div>
+            <div class="text-center py-12 text-gray-400 italic w-full">
+                Belum ada data artikel post saat ini.
+            </div>
             @endforelse
 
         </div>
 
         {{-- ANDROID STYLE INDICATOR DOTS --}}
         @if (count($newpost) > 1)
-            <div class="absolute bottom-4 left-0 right-0 flex justify-center items-center space-x-1.5 z-40">
-                @foreach ($newpost as $index => $item)
-                    {{-- Efek transisi melebar pas aktif khas UI Android modern --}}
-                    <button class="h-2 rounded-full transition-all duration-300 ease-out"
-                        :class="currentIndex === {{ $index }} ? 'w-6 bg-blue-950' : 'w-2 bg-gray-300'"
-                        @click="scrollTo({{ $index }})">
-                    </button>
-                @endforeach
-            </div>
+        <div class="absolute bottom-4 left-0 right-0 flex justify-center items-center space-x-1.5 z-40">
+            @foreach ($newpost as $index => $item)
+            {{-- Efek transisi melebar pas aktif khas UI Android modern --}}
+            <button class="h-2 rounded-full transition-all duration-300 ease-out"
+                :class="currentIndex === {{ $index }} ? 'w-6 bg-blue-950' : 'w-2 bg-gray-300'"
+                @click="scrollTo({{ $index }})">
+            </button>
+            @endforeach
+        </div>
         @endif
 
     </div>
